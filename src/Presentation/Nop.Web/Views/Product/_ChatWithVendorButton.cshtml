@@ -1,0 +1,8 @@
+﻿@model ProductDetailsModel
+@* @{
+    var addtocomparelink = Url.RouteUrl("AddProductToCompare", new { productId = Model.Id });
+} *@
+
+    <div class="compare-products">
+    <button type="button" class="button-2 whatsapp-button-gray" @* onclick="AjaxCart.addproducttocomparelist('@addtocomparelink');return false;" *@>Inquire With Vendor?</button>
+    </div>

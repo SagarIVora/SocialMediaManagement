@@ -1,0 +1,31 @@
+﻿<div id="chatBox">
+    <ul id="messages"></ul>
+    <input type="text" id="messageInput" />
+    <button onclick="sendMessage()">Send</button>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+<script>
+    var connection = new signalR.HubConnectionBuilder()
+        .withUrl("/chatHub")
+        .build();
+
+    connection.on("ReceiveMessage", function (user, message) {
+        $("#messages").append("<li><strong>" + user + "</strong>: " + message + "</li>");
+    });
+
+    connection.start().then(function () {
+        console.log('SignalR connection started.');
+    }).catch(function (err) {
+        console.error('Error starting SignalR connection: ' + err);
+    });
+
+    function sendMessage() {
+        var user = "John";
+        var message = $("#messageInput").val();
+        connection.invoke("SendMessage", user, message).catch(function (err) {
+            console.error(err.toString());
+        });
+    }
+</script>
